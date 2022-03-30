@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
 
@@ -8,7 +8,28 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
 
-	const checkIfWalletIsConnected = () => {
+	const [currentAccount, setCurrentAccount] = useState("");
+
+	const connectWallet = async () => {
+		try {
+			const { ethereum } = window;
+			
+			if (!ethereum) {
+				alert("Get MetaMaks -> https://metamask.io/");
+				return;
+			}
+
+			// request access to account
+			const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+
+			console.log("Connected", accounts[0]);
+			setCurrentAccount(accounts[0]);
+		} catch (error) {
+			console.error("Wallet could not be connected", error);
+		}
+	}
+
+	const checkIfWalletIsConnected = async () => {
 
 		// First make sure we have access to window.ethereum = window["ethereum"]
 		// window["ethereum"] is provided from MetaMask in the window
@@ -20,12 +41,22 @@ const App = () => {
 		} else {
 			console.log("We have the ethereum object", ethereum);
 		}
-	  }
+
+		const accounts = await ethereum.request({ method: "eth_accounts" });
+
+		if (accounts.length !== 0) {
+			const account = accounts[0];
+			console.log("Found an authorized account:", account);
+			setCurrentAccount(account);
+		} else {
+			console.log("No authorized account found");
+		}
+	  };
 
 	const renderNotConnectedContainer = () => (
 		<div className='connect-wallet-container'>
 			<img src='https://media.giphy.com/media/157anh4ffDsSA/giphy.gif' alt='Ninja gif'></img>
-			<button className='cta-button connect-wallet-button'>Connect Wallet</button>
+			<button onClick={connectWallet} className='cta-button connect-wallet-button'>Connect Wallet</button>
 		</div>
 	);
 
