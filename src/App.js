@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
 import { ethers } from "ethers";
+import contractAbi from './utils/contractABI.json';
 
 // Constants
 const TWITTER_HANDLE = 'danielpartidag';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const tld = ".weirdo";
-const CONTRACT_ADDRESS = "0x0000";
+const CONTRACT_ADDRESS = "0x76aCD397475022a1098A8b77DDae0aC02884C7B3";
 
 const App = () => {
 
@@ -59,6 +60,46 @@ const App = () => {
 		}
 	  };
 
+	  const mintDomain = async () =>  {
+		//   do not run if domain is empty
+		if (!domain) { return }
+		// alert user if domain is too short
+		if (domain.length < 3) {
+			alert("Domain must be at least 3 characters long");
+		}
+
+		// Calculate price based on domain length
+		const price = domain.length === 3 ? '0.5' : domain.length === 4 ? '0.3' : '0.1';
+		console.log("Minting domain", domain, "with price", price);
+		try {
+			const { ethereum } = window;
+			if(ethereum) {
+				// provider necessary to talk with Polygon nodes
+				const provider = new ethers.providers.Web3Provider(ethereum);
+				const signer = provider.getSigner();
+				const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
+
+				console.log("Going to pop wallet now to pay gas...");
+				let txn = await contract.register(domain, {value: ethers.utils.parseEther(price)});
+				const recipe = await txn.wait();
+
+				if (recipe.status === 1) {
+					console.log("Domain minted! https://mumbai.polygonscan.com/tx/" + txn.hash);
+
+					txn = await contract.setRecord(domain, record);
+					await txn.wait();
+
+					console.log("Record set! https://mumbai.polygonscan.com/tx/" + txn.hash);
+
+					setRecord("");
+					setDomain("");
+				}
+			}
+		} catch (error) {
+			console.error("Ups, an error occurred during the transaction", error);
+		}
+	  }
+
 	const renderNotConnectedContainer = () => (
 		<div className='connect-wallet-container'>
 			<img src='https://media.giphy.com/media/157anh4ffDsSA/giphy.gif' alt='Ninja gif'></img>
@@ -87,7 +128,8 @@ const App = () => {
 				/>
 
 				<div className='button-container'>
-					<button className='cta-button mint-button' disabled={null} onClick={null}>
+					{/* Call the minDomain function when the button is clicked */}
+					<button className='cta-button mint-button' disabled={null} onClick={mintDomain}>
 						Mint
 					</button>
 					<button className='cta-button mint-button' disabled={null} onClick={null}>
@@ -114,7 +156,8 @@ const App = () => {
 						</div>
 					</header>
 				</div>
-
+				
+				{/* Render gif if no wallet is conencted*/}
 				{!currentAccount && renderNotConnectedContainer()}
 				{/* Render the input form if an account is connected */}
 				{currentAccount && renderInputForm()}
