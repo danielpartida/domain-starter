@@ -9,7 +9,9 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const App = () => {
 
 	const checkIfWalletIsConnected = () => {
-		// First make sure we have access to window.ethereum
+
+		// First make sure we have access to window.ethereum = window["ethereum"]
+		// window["ethereum"] is provided from MetaMask in the window
 		const { ethereum } = window;
 
 		if (!ethereum) {
@@ -22,7 +24,7 @@ const App = () => {
 
 	const renderNotConnectedContainer = () => (
 		<div className='connect-wallet-container'>
-			<img src='https://media.giphy.com/media/3ohhwytHcusSCXXOUg/giphy.gif' alt='Ninja gif'></img>
+			<img src='https://media.giphy.com/media/157anh4ffDsSA/giphy.gif' alt='Ninja gif'></img>
 			<button className='cta-button connect-wallet-button'>Connect Wallet</button>
 		</div>
 	);
