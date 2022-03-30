@@ -9,16 +9,16 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const App = () => {
 
 	const checkIfWalletIsConnected = () => {
+		// First make sure we have access to window.ethereum
+		const { ethereum } = window;
 
-		const { ethererum }  = window;
-
-		if (!ethererum) {
-			console.log("Make sure you have MetaMask in your browser!");
-			return;
+		if (!ethereum) {
+			console.log("Make sure you have MetaMask!");
+		return;
 		} else {
-			console.log("We have ethereum object", ethererum);
+			console.log("We have the ethereum object", ethereum);
 		}
-	}
+	  }
 
 	const renderNotConnectedContainer = () => (
 		<div className='connect-wallet-container'>
