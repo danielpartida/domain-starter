@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
+import { ethers } from "ethers";
 
 // Constants
 const TWITTER_HANDLE = 'danielpartidag';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
+const tld = ".weirdo";
+const CONTRACT_ADDRESS = "0x0000";
+
 const App = () => {
 
 	const [currentAccount, setCurrentAccount] = useState("");
+	const [domain, setDomain] = useState("");
+	const [record, setRecord] = useState("");
 
 	const connectWallet = async () => {
 		try {
@@ -60,6 +66,38 @@ const App = () => {
 		</div>
 	);
 
+	const renderInputForm = () => {
+		return (
+			<div className='form-container'>
+				<div className='first-row'>
+					<input
+						type="text"
+						value={domain}
+						placeholder="domain"
+						onChange={event => setDomain(event.target.value)}
+					/>
+					<p className='tld'> {tld} </p>
+				</div>
+
+				<input 
+					type="text"
+					value={record}
+					placeholder="what is your weirdo power"
+					onChange={event => setRecord(event.target.value)}
+				/>
+
+				<div className='button-container'>
+					<button className='cta-button mint-button' disabled={null} onClick={null}>
+						Mint
+					</button>
+					<button className='cta-button mint-button' disabled={null} onClick={null}>
+						Set data
+					</button>
+				</div>
+			</div>
+		);
+	}
+
 	// this runs the function when the page loads
 	useEffect(() => {
 		checkIfWalletIsConnected();
@@ -77,7 +115,9 @@ const App = () => {
 					</header>
 				</div>
 
-				{renderNotConnectedContainer()}
+				{!currentAccount && renderNotConnectedContainer()}
+				{/* Render the input form if an account is connected */}
+				{currentAccount && renderInputForm()}
 
         		<div className="footer-container">
 					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
