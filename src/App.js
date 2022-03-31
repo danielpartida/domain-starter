@@ -62,6 +62,16 @@ const App = () => {
 		} else {
 			console.log("No authorized account found");
 		}
+
+		const chainId = await ethereum.request({ method: "eth_chainId"});
+		// Fetch correct network from networks dictionary
+		setNetwork(networks[chainId]);
+
+		ethereum.on("chainChanged", handleChainChanged);
+
+		function handleChainChanged(_chainId) {
+			window.location.reload();
+		}
 	  };
 
 	  const mintDomain = async () =>  {
