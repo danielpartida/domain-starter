@@ -127,7 +127,12 @@ const App = () => {
 		if (network !== "Polygon Mumbai Testnet") {
 			return (
 				<div className='connect-wallet-container'>
-					<p>Please connect to the Polygon Mumbai Testnet</p>
+					<p>Please switch to the Polygon Mumbai Testnet</p>
+					<button 
+						className='cta-button mint-button' 
+						onClick={switchNetwork}>
+						Click here to switch
+					</button>
 				</div>
 			);
 		}
@@ -162,6 +167,47 @@ const App = () => {
 				</div>
 			</div>
 		);
+	}
+
+	const switchNetwork = async () => {
+		// Check if MetaMask is running in the browser
+		if(window.ethereum) {
+			try {
+				// Switch network
+				await window.ethereum.request({
+					method: "wallet_switchEthereumChain",
+					params: [{ chainId: "0x13881" }],
+				});
+			} catch (error) {
+				// Error 4902 represents that the chain is not present in MetaMask
+				// Thus, we handle this by adding the chain
+				if (error.code === 4902) {
+					try {
+						await window.ethereum.request({
+							method: 'wallet_addEthereumChain',
+							params: [
+								{
+									chainId: '0x13881',
+									chainName: 'Polygon Mumbai Testnet',
+									rcpUrls: ['https://rpc-mumbai.maticvigil.com/'],
+									nativeCurrency: {
+										name: 'Mumbai Matic',
+										symbol: "MATIC",
+										decimals: 18
+									},
+									blockExploreUrls: ["https://mumbai.polygonscan.com/"]
+								}
+							]
+						});
+					} catch (error) {
+						console.error("Ups, we could not add the chain", error);
+					}
+				}
+				console.error("Ups, an unknown error just occurred", error);
+			}
+		} else {
+			alert('MetaMask is not installed. Please install it to use this app: https://metamask.io/download.html');
+		}
 	}
 
 	// this runs the function when the page loads
