@@ -3,6 +3,9 @@ import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
 import { ethers } from "ethers";
 import contractAbi from './utils/contractABI.json';
+import polygonLogo from './assets/polygonlogo.png';
+import ethLogo from './assets/ethlogo.png';
+import { networks } from './utils/networks';
 
 // Constants
 const TWITTER_HANDLE = 'danielpartidag';
@@ -13,6 +16,7 @@ const CONTRACT_ADDRESS = "0x76aCD397475022a1098A8b77DDae0aC02884C7B3";
 
 const App = () => {
 
+	const [network, setNetwork] = useState("");
 	const [currentAccount, setCurrentAccount] = useState("");
 	const [domain, setDomain] = useState("");
 	const [record, setRecord] = useState("");
@@ -153,6 +157,11 @@ const App = () => {
             			<div className="left">
               			<p className="title">🤪 WeirDAO Name Service</p>
               			<p className="subtitle">Your immortal API on the blockchain!</p>
+						</div>
+						{/* Displaz a logo and wallet connection status*/}
+						<div className='right'>
+							<img alt='Network Logo' className='logo' src={ network.includes("Polygon") ? polygonLogo : ethLogo } />
+							{ currentAccount ? <p> Wallet: {currentAccount.slice(0,6)}...{currentAccount.slice(-4)} </p> : <p> Not connected </p> }
 						</div>
 					</header>
 				</div>
