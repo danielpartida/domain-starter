@@ -114,14 +114,24 @@ const App = () => {
 		}
 	  }
 
-	const renderNotConnectedContainer = () => (
+	const renderNotConnectedContainer = () => {
+		return (
 		<div className='connect-wallet-container'>
 			<img src='https://media.giphy.com/media/157anh4ffDsSA/giphy.gif' alt='Ninja gif'></img>
 			<button onClick={connectWallet} className='cta-button connect-wallet-button'>Connect Wallet</button>
 		</div>
-	);
+		);
+	};
 
 	const renderInputForm = () => {
+		if (network !== "Polygon Mumbai Testnet") {
+			return (
+				<div className='connect-wallet-container'>
+					<p>Please connect to the Polygon Mumbai Testnet</p>
+				</div>
+			);
+		}
+
 		return (
 			<div className='form-container'>
 				<div className='first-row'>
