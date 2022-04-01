@@ -143,8 +143,14 @@ const App = () => {
 
 					console.log("Record set! https://mumbai.polygonscan.com/tx/" + txn.hash);
 
+					setTimeout(() => {
+						fetchMints();
+					}, 2000);
+
 					setRecord("");
 					setDomain("");
+				} else {
+					alert("Transaction failed! Please try again");
 				}
 			}
 		} catch (error) {
