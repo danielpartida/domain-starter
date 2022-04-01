@@ -11,7 +11,7 @@ import { networks } from './utils/networks';
 const TWITTER_HANDLE = 'danielpartidag';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
-const tld = ".weirdo";
+const tld = ".weirdao";
 const CONTRACT_ADDRESS = "0xFf1d096746C11189B9ab28C8396aEb1280De00d7";
 
 const App = () => {
@@ -222,7 +222,7 @@ const App = () => {
 				<input 
 					type="text"
 					value={record}
-					placeholder="what is your weirdo power"
+					placeholder="what is your weirdao power"
 					onChange={event => setRecord(event.target.value)}
 				/>
 
