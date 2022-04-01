@@ -359,6 +359,7 @@ const App = () => {
 				{!currentAccount && renderNotConnectedContainer()}
 				{/* Render the input form if an account is connected */}
 				{currentAccount && renderInputForm()}
+				{mints && renderMints()}
 
         		<div className="footer-container">
 					<img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
@@ -366,7 +367,7 @@ const App = () => {
 						href={TWITTER_LINK}
 						target="_blank"
 						rel="noreferrer"
-					>{`built with @${TWITTER_HANDLE}`}</a>
+					>{`built by @${TWITTER_HANDLE}`}</a>
 				</div>
 			</div>
 		</div>
