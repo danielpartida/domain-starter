@@ -226,16 +226,28 @@ const App = () => {
 					onChange={event => setRecord(event.target.value)}
 				/>
 
-				<div className='button-container'>
-					{/* Call the minDomain function when the button is clicked */}
-					<button className='cta-button mint-button' disabled={null} onClick={mintDomain}>
-						Mint
-					</button>
-					<button className='cta-button mint-button' disabled={null} onClick={null}>
-						Set data
-					</button>
-				</div>
-			</div>
+				{/* If editing variable is True (editing mode), 
+				return the "set record" and "cancel" button */}
+				{editing ? (
+					<div className='button-container'>
+						{/* Call the minDomain function when the button is clicked */}
+						<button 
+							className='cta-button mint-button' 
+							disabled={loading} onClick={updateDomain}>
+							Set record
+						</button>
+						<button 
+							className='cta-button mint-button' 
+							onClick={() => {setEditing(false)}}>
+							Cancel
+						</button>
+					</div> 
+				) : (
+				<button className='cta-button mint-button' disabled={loading} onClick={mintDomain}>
+					Mint
+				</button>
+				)}
+			</div>	
 		);
 	}
 
