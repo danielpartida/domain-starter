@@ -12,7 +12,7 @@ const TWITTER_HANDLE = 'danielpartidag';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const tld = ".weirdao";
-const CONTRACT_ADDRESS = "0xFf1d096746C11189B9ab28C8396aEb1280De00d7";
+const CONTRACT_ADDRESS = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
 const App = () => {
 
