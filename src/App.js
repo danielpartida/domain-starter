@@ -77,6 +77,41 @@ const App = () => {
 		}
 	  };
 
+	  // fetches three things
+	  // 1. All the domain names from the contract
+	  // 2. The record for each domain name it got
+	  // 3. The owner's address for each domain name it got
+	  const fetchMints = async () => {
+		  try {
+			  const { ethereum } = window;
+			  if (ethereum) {
+				  const provider = new ethers.providers.Web3Provider(ethereum);
+				  const signer = provider.getSigner();
+				  const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
+				  
+				  // get all domain names from our contract
+				  // (Contract) function getAllNames() public view returns (string[] memory)
+				  const names = await contract.getAllNames();
+
+				  const mintRecords = await Promise.all(names.map(async (name) => {
+					  const mintRecord = await contract.records(name); // (Contract) mapping(string => string)
+					  const owner = await contract.domains(name); // (Contract) mapping(string => address)
+					  return {
+						  id: names.indexOf(name),
+						  name: name,
+						  record: mintRecord,
+						  owner: owner
+					  };
+				  }));
+
+				  console.log("Mints fetched ", mintRecords);
+				  setMints(mintRecords);
+			  }
+		  } catch (error) {
+			  console.error("Ups, fetched mints failed", error);
+		  }
+	  }
+
 	  const mintDomain = async () =>  {
 		//   do not run if domain is empty
 		if (!domain) { return }
