@@ -20,6 +20,11 @@ Have some questions make sure you head over to your [buildspace Dashboard](https
 - Ethereum provider API | MetaMask <https://docs.metamask.io/guide/ethereum-provider.html#methods>
 - RPC API <https://docs.metamask.io/guide/rpc-api.html>
 
-## Deployment of contract:
+## Deployment of contract
 
 - Run the script deploy.js from the project dns-polygon. Fetch the contract ABI from the folder .cool-domains/artifacts/contracts/Domain/Domain.json. Copy/paste the ABI to the folder ./src/utils/contractABI.json
+
+
+## IPFS
+
+- NFT deployed at https://cloudflare-ipfs.com/ipfs/QmZ3NKgvNGLfmkwJy2eE3qPvpqhU8oT4ZpKdZtMzxYKpDz (Open with Brave browser)
